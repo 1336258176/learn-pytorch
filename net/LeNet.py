@@ -35,5 +35,6 @@ class LeNet(nn.Module):
 
 if __name__ == '__main__':
     net = LeNet(1)
-    print(pytorch_model_summary.summary(net, torch.rand(size=(1, 1, 28, 28), dtype=torch.float32), show_input=True,
+    print(pytorch_model_summary.summary(net, torch.rand(size=(1, 1, 28, 28), dtype=torch.float32),
+                                        show_input=True,
                                         show_hierarchical=True))

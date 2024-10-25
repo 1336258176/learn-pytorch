@@ -13,7 +13,7 @@ import torch.optim.lr_scheduler
 import load_data
 import LeNet
 
-epochs = 30
+epochs = 50
 batch_size = 100
 dropout = 0.5
 lr = 0.1
