@@ -55,9 +55,13 @@ def load_data(name: str, batch_size: int = 100, resize=None):
 
 if __name__ == '__main__':
     dataset_name = 'FashionMNIST'
-    writer = tensorboard.SummaryWriter(log_dir=log_dir)
-    train_loader, test_loader = load_data(name=dataset_name, batch_size=100)
-    for idx, (images, labels) in enumerate(test_loader):
-        writer.add_images(dataset_name + '/images', images, idx)
-    writer.flush()
-    writer.close()
+    train_loader, test_loader = load_data(name=dataset_name, batch_size=100, resize=224)
+    # writer = tensorboard.SummaryWriter(log_dir=log_dir)
+    # for idx, (images, labels) in enumerate(test_loader):
+    #     writer.add_images(dataset_name + '/images', images, idx)
+    # writer.flush()
+    # writer.close()
+    it = iter(test_loader)
+    images, labels = next(it)
+    print(images.shape)
+    print(labels.shape)

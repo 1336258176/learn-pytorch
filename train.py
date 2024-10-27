@@ -18,14 +18,14 @@ from net import LeNet
 epochs = 50
 batch_size = 100
 dropout = 0.5
-lr = 0.1
+lr = 0.001
 resize = 224
 dataset_name = 'FashionMNIST'
 dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 writer = tensorboard.SummaryWriter('./logs')
-train_loader, test_loader = load_data.load_data(name=dataset_name, batch_size=batch_size)
-model = LeNet.LeNet(1).to(dev)
-# model = AlexNet.AlexNet().to(dev)
+train_loader, test_loader = load_data.load_data(name=dataset_name, batch_size=batch_size, resize=resize)
+# model = LeNet.LeNet(1).to(dev)
+model = AlexNet.AlexNet().to(dev)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=lr)
 lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=4, factor=0.1)
