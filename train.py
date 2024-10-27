@@ -11,15 +11,18 @@ import torch.utils.data as data
 import torch.optim.lr_scheduler
 
 import load_data
-import LeNet
+from net import AlexNet
 
-epochs = 50
-batch_size = 100
+epochs = 10
+batch_size = 64
 dropout = 0.5
-lr = 0.1
+lr = 0.01
+resize = 224
+dataset_name = 'FashionMNIST'
 dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-train_loader, test_loader = load_data.load_data(batch_size=batch_size)
-model = LeNet.LeNet(1).to(dev)
+train_loader, test_loader = load_data.load_data(name=dataset_name, batch_size=batch_size, resize=resize)
+# model = LeNet.LeNet(1).to(dev)
+model = AlexNet.AlexNet().to(dev)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=lr)
 lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=4, factor=0.1)
@@ -33,10 +36,10 @@ def train_loop(data_loader: data.DataLoader, model, loss_fn, optimizer):
     size = len(data_loader.dataset)
     for batch_idx, (x, y) in enumerate(data_loader):
         x, y = x.to(dev), y.to(dev)
+        optimizer.zero_grad()
         loss = loss_fn(model(x), y)
         loss.backward()
         optimizer.step()
-        optimizer.zero_grad()
 
         if (batch_idx + 1) % batch_size == 0:
             loss, current = loss.item(), batch_idx * batch_size + len(x)
